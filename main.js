@@ -20,6 +20,7 @@ const closeDetailsBtn = document.getElementById('close-details');
 const shareBtnEl = document.getElementById('share-btn');
 const profilePicEl = document.getElementById('profile-pic');
 const twitterLinkEl = document.getElementById('twitter-link');
+const twitterHandleEl = document.getElementById('twitter-handle');
 
 // Current displayed day data (for sharing)
 let currentDayData = null;
@@ -350,8 +351,13 @@ function setupTwitterProfile() {
   profilePicEl.alt = `@${TWITTER_HANDLE}`;
 
   // Set link to Twitter profile
-  twitterLinkEl.href = `https://x.com/${TWITTER_HANDLE}`;
+  const twitterUrl = `https://x.com/${TWITTER_HANDLE}`;
+  twitterLinkEl.href = twitterUrl;
   twitterLinkEl.title = `@${TWITTER_HANDLE} on X`;
+
+  // Set the handle link
+  twitterHandleEl.href = twitterUrl;
+  twitterHandleEl.textContent = `@${TWITTER_HANDLE}`;
 }
 
 // Show yesterday's data by default if available

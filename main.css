@@ -51,6 +51,10 @@ body {
 
 .profile-section {
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .profile-pic {
@@ -65,6 +69,18 @@ body {
 
 .profile-pic:hover {
   border-color: var(--accent-blue);
+}
+
+.twitter-handle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.twitter-handle:hover {
+  color: var(--accent-blue);
 }
 
 .stats-section {
@@ -469,6 +485,38 @@ body {
 
 .tooltip-revenue {
   color: var(--text-secondary);
+}
+
+/* Chart Hint */
+.chart-hint {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 16px;
+  font-style: italic;
+}
+
+/* Footer */
+.footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.footer p {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: var(--accent-blue);
 }
 
 /* Responsive */
