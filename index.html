@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revenue Tracker 2026</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="profile-section">
+        <a id="twitter-link" href="#" target="_blank" rel="noopener noreferrer">
+          <img id="profile-pic" src="" alt="Profile" class="profile-pic">
+        </a>
+        <a id="twitter-handle" class="twitter-handle" href="#" target="_blank" rel="noopener noreferrer"></a>
+      </div>
+      <div class="stats-section">
+        <h1 class="title">Revenue Tracker 2026</h1>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-label">Revenue</span>
+            <span class="stat-value" id="current-revenue">$0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Objective</span>
+            <span class="stat-value" id="objective">$0</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Progress</span>
+            <span class="stat-value" id="progress-percent">0%</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Year Progress</span>
+            <span class="stat-value" id="year-percent">0%</span>
+          </div>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+          <div class="year-marker" id="year-marker"></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="day-details hidden" id="day-details">
+      <button class="close-btn" id="close-details">&times;</button>
+      <div class="details-header">
+        <div class="details-date-badge" id="details-date-badge">Day 1</div>
+        <h2 id="details-date">Select a day</h2>
+      </div>
+      <div class="details-content">
+        <div class="details-hero">
+          <span class="details-hero-label">Daily Revenue</span>
+          <span class="details-hero-amount" id="details-revenue">$0</span>
+        </div>
+        <div class="details-progress-info">
+          <span id="details-progress-text">0% of yearly goal</span>
+        </div>
+        <div class="composition" id="composition"></div>
+        <button class="share-btn" id="share-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          Share on X
+        </button>
+      </div>
+    </section>
+
+    <section class="chart-section">
+      <div class="chart-header">
+        <span class="chart-title">Daily Revenue</span>
+        <div class="legend">
+          <span class="legend-label">Less</span>
+          <div class="legend-squares">
+            <div class="legend-square" data-level="0"></div>
+            <div class="legend-square" data-level="1"></div>
+            <div class="legend-square" data-level="2"></div>
+            <div class="legend-square" data-level="3"></div>
+            <div class="legend-square" data-level="4"></div>
+          </div>
+          <span class="legend-label">More</span>
+        </div>
+      </div>
+      <div class="chart-container">
+        <div class="months-labels" id="months-labels"></div>
+        <div class="chart-wrapper">
+          <div class="days-labels">
+            <span>Mon</span>
+            <span>Wed</span>
+            <span>Fri</span>
+          </div>
+          <div class="contribution-grid" id="contribution-grid"></div>
+        </div>
+      </div>
+      <p class="chart-hint">Click on any day to see the breakdown</p>
+    </section>
+
+    <footer class="footer">
+      <p>
+        Built by <a href="https://x.com/nomalex_" target="_blank" rel="noopener noreferrer">Alexandre Grisey</a>
+        &middot;
+        <a href="https://github.com/Alex0x47/revenue-tracker" target="_blank" rel="noopener noreferrer">Clone this tracker</a>
+      </p>
+    </footer>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
