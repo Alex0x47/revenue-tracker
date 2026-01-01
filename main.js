@@ -343,13 +343,21 @@ async function captureChartImage() {
   const screenshotArea = document.getElementById('screenshot-area');
   const chartHint = document.getElementById('chart-hint');
   const chartFooterSeparator = document.querySelector('.chart-footer-separator');
-  const downloadLink = document.getElementById('download-chart-btn');
+  const downloadBtn = document.getElementById('download-chart-btn');
+  const dayDetails = document.getElementById('day-details');
+  const profilePic = document.getElementById('profile-pic');
+
+  // Store original image src to restore later
+  const originalSrc = profilePic ? profilePic.src : null;
 
   try {
     // Hide elements that shouldn't appear in screenshot
     if (chartHint) chartHint.style.display = 'none';
     if (chartFooterSeparator) chartFooterSeparator.style.display = 'none';
-    if (downloadLink) downloadLink.style.display = 'none';
+    if (downloadBtn) downloadBtn.style.display = 'none';
+    if (dayDetails) dayDetails.style.display = 'none';
+    // Remove profile pic src to avoid CORS issues with external image
+    if (profilePic) profilePic.removeAttribute('src');
 
     const blob = await domtoimage.toBlob(screenshotArea, {
       bgcolor: '#0a0a0f',
@@ -363,7 +371,9 @@ async function captureChartImage() {
     // Restore hidden elements
     if (chartHint) chartHint.style.display = '';
     if (chartFooterSeparator) chartFooterSeparator.style.display = '';
-    if (downloadLink) downloadLink.style.display = '';
+    if (downloadBtn) downloadBtn.style.display = '';
+    if (dayDetails) dayDetails.style.display = '';
+    if (profilePic && originalSrc) profilePic.src = originalSrc;
 
     return blob;
   } catch (error) {
@@ -371,7 +381,9 @@ async function captureChartImage() {
     // Restore hidden elements on error
     if (chartHint) chartHint.style.display = '';
     if (chartFooterSeparator) chartFooterSeparator.style.display = '';
-    if (downloadLink) downloadLink.style.display = '';
+    if (downloadBtn) downloadBtn.style.display = '';
+    if (dayDetails) dayDetails.style.display = '';
+    if (profilePic && originalSrc) profilePic.src = originalSrc;
     return null;
   }
 }
@@ -454,14 +466,12 @@ function downloadImage(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
-// Download chart link
-const downloadChartLink = document.getElementById('download-chart-btn');
-downloadChartLink.addEventListener('click', async (e) => {
-  e.preventDefault();
-
-  const originalText = downloadChartLink.textContent;
-  downloadChartLink.textContent = 'Generating...';
-  downloadChartLink.style.pointerEvents = 'none';
+// Download chart button
+const downloadChartBtn = document.getElementById('download-chart-btn');
+downloadChartBtn.addEventListener('click', async () => {
+  const originalText = downloadChartBtn.textContent;
+  downloadChartBtn.textContent = 'Generating...';
+  downloadChartBtn.disabled = true;
 
   const imageBlob = await captureChartImage();
 
@@ -470,8 +480,8 @@ downloadChartLink.addEventListener('click', async (e) => {
     downloadImage(imageBlob, `revenue-tracker-${today}.png`);
   }
 
-  downloadChartLink.textContent = originalText;
-  downloadChartLink.style.pointerEvents = '';
+  downloadChartBtn.textContent = originalText;
+  downloadChartBtn.disabled = false;
 });
 
 // Setup Twitter profile

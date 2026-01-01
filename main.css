@@ -622,6 +622,7 @@ body {
 }
 
 .chart-hint {
+  text-decoration: underline;
   color: var(--text-muted);
 }
 
@@ -629,15 +630,29 @@ body {
   color: var(--text-muted);
 }
 
-.download-chart-link {
-  color: var(--text-secondary);
-  text-decoration: none;
+.download-chart-btn {
+  background: var(--gradient-purple);
+  border: none;
+  color: #fff;
+  font-size: 12px;
+  font-family: inherit;
+  font-weight: 600;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
 }
 
-.download-chart-link:hover {
-  color: var(--accent-purple);
+.download-chart-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.download-chart-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+  transform: none;
 }
 
 /* Footer */
