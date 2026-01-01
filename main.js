@@ -1,4 +1,4 @@
-import { OBJECTIVE, TWITTER_HANDLE } from './const.js';
+import { OBJECTIVE, TWITTER_HANDLE, REVENUE_TRESHOLDS } from './const.js';
 import { revenue } from './revenue.js';
 
 // DOM Elements
@@ -58,9 +58,10 @@ function getYearProgress() {
 // Get revenue level for a given amount (0-4)
 function getRevenueLevel(amount) {
   if (amount === 0) return 0;
-  if (amount < 500) return 1;
-  if (amount < 1000) return 2;
-  if (amount < 2000) return 3;
+  if (amount < REVENUE_TRESHOLDS.level1) return 1;
+  if (amount < REVENUE_TRESHOLDS.level2) return 2;
+  if (amount < REVENUE_TRESHOLDS.level3) return 3;
+  if (amount < REVENUE_TRESHOLDS.level4) return 4;
   return 4;
 }
 
@@ -345,10 +346,15 @@ async function captureChartImage() {
   const chartFooterSeparator = document.querySelector('.chart-footer-separator');
   const downloadBtn = document.getElementById('download-chart-btn');
   const dayDetails = document.getElementById('day-details');
+  const twitterLink = document.getElementById('twitter-link');
   const profilePic = document.getElementById('profile-pic');
+  const twitterHandle = document.getElementById('twitter-handle');
+  const yearProgressLabel = document.querySelector('.stat:nth-child(4) .stat-label');
 
-  // Store original image src to restore later
-  const originalSrc = profilePic ? profilePic.src : null;
+  // Store original values to restore later
+  const originalHandleText = twitterHandle ? twitterHandle.textContent : null;
+  const originalYearLabel = yearProgressLabel ? yearProgressLabel.textContent : null;
+  const originalPicSrc = profilePic ? profilePic.src : null;
 
   try {
     // Hide elements that shouldn't appear in screenshot
@@ -356,8 +362,13 @@ async function captureChartImage() {
     if (chartFooterSeparator) chartFooterSeparator.style.display = 'none';
     if (downloadBtn) downloadBtn.style.display = 'none';
     if (dayDetails) dayDetails.style.display = 'none';
-    // Remove profile pic src to avoid CORS issues with external image
+    // Hide profile pic AND remove src (CORS issues even when hidden)
+    if (twitterLink) twitterLink.style.display = 'none';
     if (profilePic) profilePic.removeAttribute('src');
+    // Replace X handle with full link
+    if (twitterHandle) twitterHandle.textContent = `x.com/${TWITTER_HANDLE}`;
+    // Make "Year Progress" fit on one line
+    if (yearProgressLabel) yearProgressLabel.textContent = 'Year';
 
     const blob = await domtoimage.toBlob(screenshotArea, {
       bgcolor: '#0a0a0f',
@@ -373,7 +384,10 @@ async function captureChartImage() {
     if (chartFooterSeparator) chartFooterSeparator.style.display = '';
     if (downloadBtn) downloadBtn.style.display = '';
     if (dayDetails) dayDetails.style.display = '';
-    if (profilePic && originalSrc) profilePic.src = originalSrc;
+    if (twitterLink) twitterLink.style.display = '';
+    if (profilePic && originalPicSrc) profilePic.src = originalPicSrc;
+    if (twitterHandle && originalHandleText) twitterHandle.textContent = originalHandleText;
+    if (yearProgressLabel && originalYearLabel) yearProgressLabel.textContent = originalYearLabel;
 
     return blob;
   } catch (error) {
@@ -383,7 +397,10 @@ async function captureChartImage() {
     if (chartFooterSeparator) chartFooterSeparator.style.display = '';
     if (downloadBtn) downloadBtn.style.display = '';
     if (dayDetails) dayDetails.style.display = '';
-    if (profilePic && originalSrc) profilePic.src = originalSrc;
+    if (twitterLink) twitterLink.style.display = '';
+    if (profilePic && originalPicSrc) profilePic.src = originalPicSrc;
+    if (twitterHandle && originalHandleText) twitterHandle.textContent = originalHandleText;
+    if (yearProgressLabel && originalYearLabel) yearProgressLabel.textContent = originalYearLabel;
     return null;
   }
 }
