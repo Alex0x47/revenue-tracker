@@ -35,13 +35,7 @@ export const revenue = [
         id: 'my-apps',
         name: 'My Apps',
         url: '',
-        revenue: 80,
-      },
-      {
-        id: 'my-ebook',
-        name: 'My Ebook',
-        url: 'https://pim.ms/kutR8yz',
-        revenue: 20,
+        revenue: 71.14,
       },
     ]
   }
