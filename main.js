@@ -341,40 +341,29 @@ Follow my journey with my revenue tracker: ${window.location.href}`;
 // Capture chart as image
 async function captureChartImage() {
   const chartSection = document.querySelector('.chart-section');
+  const downloadBtn = document.querySelector('.download-chart-btn');
 
   try {
-    const canvas = await html2canvas(chartSection, {
-      backgroundColor: '#0a0a0f',
-      scale: 2,
-      logging: false,
-      useCORS: true,
-      allowTaint: true,
-      foreignObjectRendering: false,
-      ignoreElements: (element) => {
-        // Ignore the download button
-        return element.classList?.contains('download-chart-btn');
-      },
-      onclone: (clonedDoc, element) => {
-        // Force solid colors on all elements to avoid oklch issues
-        element.style.background = '#12121a';
-        element.style.colorScheme = 'dark';
+    // Temporarily hide the download button
+    if (downloadBtn) downloadBtn.style.visibility = 'hidden';
 
-        // Remove any accent-color that might use oklch
-        const allElements = element.querySelectorAll('*');
-        allElements.forEach(el => {
-          el.style.accentColor = 'auto';
-          el.style.colorScheme = 'dark';
-        });
+    const blob = await domtoimage.toBlob(chartSection, {
+      bgcolor: '#0a0a0f',
+      scale: 2,
+      style: {
+        'transform': 'scale(1)',
+        'transform-origin': 'top left'
       }
     });
 
-    return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        resolve(blob);
-      }, 'image/png');
-    });
+    // Restore the download button
+    if (downloadBtn) downloadBtn.style.visibility = 'visible';
+
+    return blob;
   } catch (error) {
     console.error('Failed to capture chart:', error);
+    // Restore the download button on error
+    if (downloadBtn) downloadBtn.style.visibility = 'visible';
     return null;
   }
 }

@@ -5,43 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Revenue Tracker 2026</title>
   <link rel="stylesheet" href="main.css">
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dom-to-image-more@3.4.5/dist/dom-to-image-more.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <header class="header">
-      <div class="profile-section">
-        <a id="twitter-link" href="#" target="_blank" rel="noopener noreferrer">
-          <img id="profile-pic" src="" alt="Profile" class="profile-pic">
-        </a>
-        <a id="twitter-handle" class="twitter-handle" href="#" target="_blank" rel="noopener noreferrer"></a>
-      </div>
-      <div class="stats-section">
-        <h1 class="title">Revenue Tracker 2026</h1>
-        <div class="stats">
-          <div class="stat">
-            <span class="stat-label">Revenue</span>
-            <span class="stat-value" id="current-revenue">$0</span>
+    <div class="screenshot-area" id="screenshot-area">
+      <header class="header">
+        <div class="profile-section">
+          <a id="twitter-link" href="#" target="_blank" rel="noopener noreferrer">
+            <img id="profile-pic" src="" alt="Profile" class="profile-pic">
+          </a>
+          <a id="twitter-handle" class="twitter-handle" href="#" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+        <div class="stats-section">
+          <h1 class="title">Revenue Tracker 2026</h1>
+          <div class="stats">
+            <div class="stat">
+              <span class="stat-label">Revenue</span>
+              <span class="stat-value" id="current-revenue">$0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Objective</span>
+              <span class="stat-value" id="objective">$0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Progress</span>
+              <span class="stat-value" id="progress-percent">0%</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Year Progress</span>
+              <span class="stat-value" id="year-percent">0%</span>
+            </div>
           </div>
-          <div class="stat">
-            <span class="stat-label">Objective</span>
-            <span class="stat-value" id="objective">$0</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Progress</span>
-            <span class="stat-value" id="progress-percent">0%</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Year Progress</span>
-            <span class="stat-value" id="year-percent">0%</span>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+            <div class="year-marker" id="year-marker"></div>
           </div>
         </div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progress-fill"></div>
-          <div class="year-marker" id="year-marker"></div>
+      </header>
+
+      <section class="chart-section">
+        <div class="chart-header">
+          <span class="chart-title">Daily Revenue</span>
+          <div class="legend">
+            <span class="legend-label">Less</span>
+            <div class="legend-squares">
+              <div class="legend-square" data-level="0"></div>
+              <div class="legend-square" data-level="1"></div>
+              <div class="legend-square" data-level="2"></div>
+              <div class="legend-square" data-level="3"></div>
+              <div class="legend-square" data-level="4"></div>
+            </div>
+            <span class="legend-label">More</span>
+          </div>
         </div>
-      </div>
-    </header>
+        <div class="chart-container">
+          <div class="months-labels" id="months-labels"></div>
+          <div class="chart-wrapper">
+            <div class="days-labels">
+              <span>Mon</span>
+              <span>Wed</span>
+              <span>Fri</span>
+            </div>
+            <div class="contribution-grid" id="contribution-grid"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="download-section">
+      <button class="download-chart-btn" id="download-chart-btn">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+        Download as image
+      </button>
+    </div>
 
     <section class="day-details hidden" id="day-details">
       <button class="close-btn" id="close-details">&times;</button>
@@ -93,17 +132,6 @@
           <div class="contribution-grid" id="contribution-grid"></div>
         </div>
       </div>
-      <div class="chart-footer">
-        <p class="chart-hint">Click on any day to see the breakdown</p>
-        <button class="download-chart-btn" id="download-chart-btn">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-          </svg>
-          Download chart
-        </button>
-      </div>
-    </section>
-
     <footer class="footer">
       <p>
         Originally built by <a href="https://x.com/nomalex_" target="_blank" rel="noopener noreferrer">Alexandre Grisey</a>
