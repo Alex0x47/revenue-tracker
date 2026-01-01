@@ -406,63 +406,11 @@ async function captureChartImage() {
 }
 
 // Share on X
-shareBtnEl.addEventListener('click', async () => {
+shareBtnEl.addEventListener('click', () => {
   if (!currentDayData || !currentDayData.revenueData) return;
 
   const tweetText = generateTweetText();
-
-  // Try to capture chart image
-  shareBtnEl.disabled = true;
-  shareBtnEl.innerHTML = `
-    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="spin">
-      <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity=".3"/>
-      <path d="M20 12h2A10 10 0 0 0 12 2v2a8 8 0 0 1 8 8z"/>
-    </svg>
-    Generating...
-  `;
-
-  const imageBlob = await captureChartImage();
-
-  // Check if Web Share API with files is supported
-  const canShareFiles = navigator.canShare && navigator.canShare({
-    files: [new File([new Blob()], 'test.png', { type: 'image/png' })]
-  });
-
-  if (imageBlob && canShareFiles) {
-    // Use Web Share API with image
-    const file = new File([imageBlob], 'revenue-chart.png', { type: 'image/png' });
-
-    try {
-      await navigator.share({
-        text: tweetText,
-        files: [file]
-      });
-    } catch (err) {
-      if (err.name !== 'AbortError') {
-        // Fallback to Twitter intent without image
-        openTwitterIntent(tweetText);
-      }
-    }
-  } else if (imageBlob) {
-    // Download image and open Twitter intent
-    downloadImage(imageBlob, `revenue-chart-${currentDayData.dateStr}.png`);
-    // Small delay to let user see the download, then open Twitter
-    setTimeout(() => {
-      openTwitterIntent(tweetText + '\n\n(Chart image downloaded - attach it to your tweet!)');
-    }, 500);
-  } else {
-    // No image, just open Twitter intent
-    openTwitterIntent(tweetText);
-  }
-
-  // Reset button
-  shareBtnEl.disabled = false;
-  shareBtnEl.innerHTML = `
-    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-    </svg>
-    Share on X
-  `;
+  openTwitterIntent(tweetText);
 });
 
 // Open Twitter intent
