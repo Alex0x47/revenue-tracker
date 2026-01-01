@@ -597,50 +597,47 @@ body {
   font-weight: 500;
 }
 
+/* Screenshot Area */
+.screenshot-area {
+  background: var(--bg-primary);
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.screenshot-area .header {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+}
+
 /* Chart Footer */
 .chart-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  gap: 8px;
+  margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid var(--border-color);
+  font-size: 13px;
 }
 
 .chart-hint {
-  text-decoration: underline;
-  font-size: 13px;
   color: var(--text-muted);
 }
 
-.download-chart-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: var(--bg-tertiary);
+.chart-footer-separator {
+  color: var(--text-muted);
+}
+
+.download-chart-link {
   color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
+  text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 }
 
-.download-chart-btn:hover {
-  color: var(--text-primary);
-  border-color: var(--accent-purple);
-  background: rgba(139, 92, 246, 0.1);
-}
-
-.download-chart-btn:disabled {
-  opacity: 0.6;
-  cursor: wait;
-}
-
-.download-chart-btn svg {
-  flex-shrink: 0;
+.download-chart-link:hover {
+  color: var(--accent-purple);
 }
 
 /* Footer */

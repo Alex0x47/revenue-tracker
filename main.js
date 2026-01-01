@@ -338,16 +338,20 @@ ${breakdown}
 Follow my journey with my revenue tracker: ${window.location.href}`;
 }
 
-// Capture chart as image
+// Capture chart as image (includes header with stats)
 async function captureChartImage() {
-  const chartSection = document.querySelector('.chart-section');
-  const downloadBtn = document.querySelector('.download-chart-btn');
+  const screenshotArea = document.getElementById('screenshot-area');
+  const chartHint = document.getElementById('chart-hint');
+  const chartFooterSeparator = document.querySelector('.chart-footer-separator');
+  const downloadLink = document.getElementById('download-chart-btn');
 
   try {
-    // Temporarily hide the download button
-    if (downloadBtn) downloadBtn.style.visibility = 'hidden';
+    // Hide elements that shouldn't appear in screenshot
+    if (chartHint) chartHint.style.display = 'none';
+    if (chartFooterSeparator) chartFooterSeparator.style.display = 'none';
+    if (downloadLink) downloadLink.style.display = 'none';
 
-    const blob = await domtoimage.toBlob(chartSection, {
+    const blob = await domtoimage.toBlob(screenshotArea, {
       bgcolor: '#0a0a0f',
       scale: 2,
       style: {
@@ -356,14 +360,18 @@ async function captureChartImage() {
       }
     });
 
-    // Restore the download button
-    if (downloadBtn) downloadBtn.style.visibility = 'visible';
+    // Restore hidden elements
+    if (chartHint) chartHint.style.display = '';
+    if (chartFooterSeparator) chartFooterSeparator.style.display = '';
+    if (downloadLink) downloadLink.style.display = '';
 
     return blob;
   } catch (error) {
     console.error('Failed to capture chart:', error);
-    // Restore the download button on error
-    if (downloadBtn) downloadBtn.style.visibility = 'visible';
+    // Restore hidden elements on error
+    if (chartHint) chartHint.style.display = '';
+    if (chartFooterSeparator) chartFooterSeparator.style.display = '';
+    if (downloadLink) downloadLink.style.display = '';
     return null;
   }
 }
@@ -446,18 +454,14 @@ function downloadImage(blob, filename) {
   URL.revokeObjectURL(url);
 }
 
-// Download chart button
-const downloadChartBtn = document.getElementById('download-chart-btn');
-downloadChartBtn.addEventListener('click', async () => {
-  downloadChartBtn.disabled = true;
-  const originalText = downloadChartBtn.innerHTML;
-  downloadChartBtn.innerHTML = `
-    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="spin">
-      <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity=".3"/>
-      <path d="M20 12h2A10 10 0 0 0 12 2v2a8 8 0 0 1 8 8z"/>
-    </svg>
-    Generating...
-  `;
+// Download chart link
+const downloadChartLink = document.getElementById('download-chart-btn');
+downloadChartLink.addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  const originalText = downloadChartLink.textContent;
+  downloadChartLink.textContent = 'Generating...';
+  downloadChartLink.style.pointerEvents = 'none';
 
   const imageBlob = await captureChartImage();
 
@@ -466,8 +470,8 @@ downloadChartBtn.addEventListener('click', async () => {
     downloadImage(imageBlob, `revenue-tracker-${today}.png`);
   }
 
-  downloadChartBtn.disabled = false;
-  downloadChartBtn.innerHTML = originalText;
+  downloadChartLink.textContent = originalText;
+  downloadChartLink.style.pointerEvents = '';
 });
 
 // Setup Twitter profile
