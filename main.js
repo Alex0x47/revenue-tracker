@@ -314,9 +314,9 @@ closeDetailsBtn.addEventListener('click', () => {
   });
 });
 
-// Share on X
-shareBtnEl.addEventListener('click', () => {
-  if (!currentDayData || !currentDayData.revenueData) return;
+// Generate tweet text
+function generateTweetText() {
+  if (!currentDayData || !currentDayData.revenueData) return '';
 
   const { dateStr, revenueData } = currentDayData;
   const totalRevenue = getTotalRevenue();
@@ -330,17 +330,155 @@ shareBtnEl.addEventListener('click', () => {
     })
     .join('\n');
 
-  // Build tweet text
-  const tweetText = `On ${formatDateShort(dateStr)} I made ${formatCurrency(revenueData.totalRevenue)}, I'm now at ${progressPercent}% of my yearly goal of ${formatCurrency(OBJECTIVE)}
+  return `On ${formatDateShort(dateStr)} I made ${formatCurrency(revenueData.totalRevenue)}, I'm now at ${progressPercent}% of my yearly goal of ${formatCurrency(OBJECTIVE)}
 
 Breakdown:
 ${breakdown}
 
 Follow my journey with my revenue tracker: ${window.location.href}`;
+}
 
-  // Open Twitter intent
-  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`;
-  window.open(tweetUrl, '_blank', 'width=550,height=420');
+// Capture chart as image
+async function captureChartImage() {
+  const chartSection = document.querySelector('.chart-section');
+
+  try {
+    const canvas = await html2canvas(chartSection, {
+      backgroundColor: '#0a0a0f',
+      scale: 2,
+      logging: false,
+      useCORS: true,
+      allowTaint: true,
+      foreignObjectRendering: false,
+      ignoreElements: (element) => {
+        // Ignore the download button
+        return element.classList?.contains('download-chart-btn');
+      },
+      onclone: (clonedDoc, element) => {
+        // Force solid colors on all elements to avoid oklch issues
+        element.style.background = '#12121a';
+        element.style.colorScheme = 'dark';
+
+        // Remove any accent-color that might use oklch
+        const allElements = element.querySelectorAll('*');
+        allElements.forEach(el => {
+          el.style.accentColor = 'auto';
+          el.style.colorScheme = 'dark';
+        });
+      }
+    });
+
+    return new Promise((resolve) => {
+      canvas.toBlob((blob) => {
+        resolve(blob);
+      }, 'image/png');
+    });
+  } catch (error) {
+    console.error('Failed to capture chart:', error);
+    return null;
+  }
+}
+
+// Share on X
+shareBtnEl.addEventListener('click', async () => {
+  if (!currentDayData || !currentDayData.revenueData) return;
+
+  const tweetText = generateTweetText();
+
+  // Try to capture chart image
+  shareBtnEl.disabled = true;
+  shareBtnEl.innerHTML = `
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="spin">
+      <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity=".3"/>
+      <path d="M20 12h2A10 10 0 0 0 12 2v2a8 8 0 0 1 8 8z"/>
+    </svg>
+    Generating...
+  `;
+
+  const imageBlob = await captureChartImage();
+
+  // Check if Web Share API with files is supported
+  const canShareFiles = navigator.canShare && navigator.canShare({
+    files: [new File([new Blob()], 'test.png', { type: 'image/png' })]
+  });
+
+  if (imageBlob && canShareFiles) {
+    // Use Web Share API with image
+    const file = new File([imageBlob], 'revenue-chart.png', { type: 'image/png' });
+
+    try {
+      await navigator.share({
+        text: tweetText,
+        files: [file]
+      });
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        // Fallback to Twitter intent without image
+        openTwitterIntent(tweetText);
+      }
+    }
+  } else if (imageBlob) {
+    // Download image and open Twitter intent
+    downloadImage(imageBlob, `revenue-chart-${currentDayData.dateStr}.png`);
+    // Small delay to let user see the download, then open Twitter
+    setTimeout(() => {
+      openTwitterIntent(tweetText + '\n\n(Chart image downloaded - attach it to your tweet!)');
+    }, 500);
+  } else {
+    // No image, just open Twitter intent
+    openTwitterIntent(tweetText);
+  }
+
+  // Reset button
+  shareBtnEl.disabled = false;
+  shareBtnEl.innerHTML = `
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    </svg>
+    Share on X
+  `;
+});
+
+// Open Twitter intent
+function openTwitterIntent(text) {
+  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(tweetUrl, '_blank', 'width=550,height=520');
+}
+
+// Download image
+function downloadImage(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename || `revenue-chart-${currentDayData?.dateStr || 'export'}.png`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Download chart button
+const downloadChartBtn = document.getElementById('download-chart-btn');
+downloadChartBtn.addEventListener('click', async () => {
+  downloadChartBtn.disabled = true;
+  const originalText = downloadChartBtn.innerHTML;
+  downloadChartBtn.innerHTML = `
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="spin">
+      <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" opacity=".3"/>
+      <path d="M20 12h2A10 10 0 0 0 12 2v2a8 8 0 0 1 8 8z"/>
+    </svg>
+    Generating...
+  `;
+
+  const imageBlob = await captureChartImage();
+
+  if (imageBlob) {
+    const today = toDateString(new Date());
+    downloadImage(imageBlob, `revenue-tracker-${today}.png`);
+  }
+
+  downloadChartBtn.disabled = false;
+  downloadChartBtn.innerHTML = originalText;
 });
 
 // Setup Twitter profile

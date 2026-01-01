@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Revenue Tracker 2026</title>
   <link rel="stylesheet" href="main.css">
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -92,7 +93,15 @@
           <div class="contribution-grid" id="contribution-grid"></div>
         </div>
       </div>
-      <p class="chart-hint">Click on any day to see the breakdown</p>
+      <div class="chart-footer">
+        <p class="chart-hint">Click on any day to see the breakdown</p>
+        <button class="download-chart-btn" id="download-chart-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          Download chart
+        </button>
+      </div>
     </section>
 
     <footer class="footer">
