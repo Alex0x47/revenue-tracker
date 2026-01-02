@@ -38,5 +38,18 @@ export const revenue = [
         revenue: 93.69,
       },
     ]
+  },
+  {
+    day: 2,
+    date: '2026-01-02',
+    totalRevenue: 28.89,
+    revenueComposition: [
+      {
+        id: 'my-apps',
+        name: 'My Apps',
+        url: '',
+        revenue: 28.89,
+      },
+    ]
   }
 ];
