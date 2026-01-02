@@ -29,13 +29,13 @@ export const revenue = [
   {
     day: 1,
     date: '2026-01-01',
-    totalRevenue: 71.14,
+    totalRevenue: 93.69,
     revenueComposition: [
       {
         id: 'my-apps',
         name: 'My Apps',
         url: '',
-        revenue: 71.14,
+        revenue: 93.69,
       },
     ]
   }
