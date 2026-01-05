@@ -81,7 +81,7 @@ export const revenue = [
   {
     day: 5,
     date: '2026-01-05',
-    totalRevenue: 100.00,
+    totalRevenue: 947.42,
     revenueComposition: [
       {
         id: 'ebook',
