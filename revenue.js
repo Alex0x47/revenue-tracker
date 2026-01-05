@@ -77,5 +77,30 @@ export const revenue = [
         revenue: 95.29,
       },
     ]
+  },
+  {
+    day: 5,
+    date: '2026-01-05',
+    totalRevenue: 100.00,
+    revenueComposition: [
+      {
+        id: 'ebook',
+        name: 'My Ebook - from $0 to $2k/mo in 9 months',
+        url: 'https://pim.ms/kutR8yz',
+        revenue: 49,
+      },
+      {
+        id: 'my-apps',
+        name: 'My Apps',
+        url: '',
+        revenue: 98.42,
+      },
+      {
+        id: 'freelancing',
+        name: 'Freelancing',
+        url: '',
+        revenue: 700,
+      }
+    ]
   }
 ];
