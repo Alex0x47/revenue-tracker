@@ -324,9 +324,8 @@ body {
 
 .composition {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px 16px;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .composition-title {
@@ -335,31 +334,47 @@ body {
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-bottom: 4px;
 }
 
 .composition-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  gap: 12px;
   font-size: 14px;
-  padding-left: 16px;
-  border-left: 2px solid var(--border-color);
+  padding: 10px 14px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
-.composition-item:first-of-type {
-  border-left: none;
-  padding-left: 0;
+.composition-item:hover {
+  background: var(--bg-primary);
+  border-color: var(--accent-purple);
+  transform: translateX(2px);
 }
 
 .composition-item-name {
   color: var(--text-secondary);
   font-weight: 500;
+  flex: 1;
 }
 
 .composition-item-name a {
   color: var(--accent-cyan);
   text-decoration: none;
   transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.composition-item-name a::after {
+  content: '↗';
+  font-size: 12px;
+  opacity: 0.6;
 }
 
 .composition-item-name a:hover {
@@ -368,10 +383,12 @@ body {
 
 .composition-item-revenue {
   font-weight: 700;
+  font-size: 15px;
   background: var(--gradient-money);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  white-space: nowrap;
 }
 
 .share-btn {
